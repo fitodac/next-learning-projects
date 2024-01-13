@@ -1,3 +1,4 @@
+'use client'
 import gsap from 'gsap'
 
 export const showItemBody = (itemBody: React.RefObject<HTMLDivElement>) => {
