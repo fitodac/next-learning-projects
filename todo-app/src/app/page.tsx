@@ -5,9 +5,9 @@ export default function Home() {
 		<main className="max-w-xl min-h-screen mx-auto py-10">
 			<div className="space-y-6">
 				<h1 className="font-bold px-6 lg:px-0">ToDo list</h1>
-				<NewTask />
+				{/* <NewTask /> */}
 				<List />
-				<DoneList />
+				{/* <DoneList /> */}
 			</div>
 		</main>
 	)

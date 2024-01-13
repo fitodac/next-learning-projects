@@ -6,10 +6,7 @@ export const Form = (props: { id: number; task: string; action: Function }) => {
 	const [task, setTask]: [string, Function] = useState(props.task)
 	const inputTask: any = useRef(null)
 
-	const hideForm = () => {
-		console.log('hideForm')
-		props.action()
-	}
+	const hideForm = () => props.action()
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setTask(e.target.value)

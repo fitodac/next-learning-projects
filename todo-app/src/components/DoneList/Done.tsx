@@ -4,8 +4,6 @@ import { getDoneTasks } from '@/actions'
 export const DoneList = async () => {
 	const data: [] = await getDoneTasks()
 
-	console.log(await typeof data)
-
 	if (data && !data.length) return <></>
 
 	return (
