@@ -1,8 +1,8 @@
-import { type NextRequest } from 'next/server'
 import sqlite3 from 'sqlite3'
-import { open } from 'sqlite'
+import { Database, open } from 'sqlite'
+import { NextRequest, NextResponse } from 'next/server'
 
-let db = null
+let db: Database<sqlite3.Database, sqlite3.Statement> | null = null
 const filename: string = './src/database/todo.sqlite'
 
 export async function GET(req: NextRequest) {
@@ -23,15 +23,20 @@ export async function GET(req: NextRequest) {
 		sql += ' WHERE done = false'
 	}
 
-	const todos = await db.all(sql)
-
-	return new Response(JSON.stringify(todos), {
-		headers: { 'content-type': 'application/json' },
-		status: 200,
-	})
+	try {
+		const response = await db.all(sql)
+		return NextResponse.json(response, { status: 200 })
+	} catch (err) {
+		return NextResponse.json(
+			{
+				error: { message: err },
+			},
+			{ status: 500 }
+		)
+	}
 }
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
 	if (!db) {
 		db = await open({
 			filename,
@@ -39,18 +44,24 @@ export async function POST(req: Request) {
 		})
 	}
 
-	const { task } = await req.json()
-	await db.run('INSERT INTO todo (task, done) VALUES (?, ?)', task, false)
+	try {
+		const { task } = await req.json()
+		await db.run('INSERT INTO todo (task, done) VALUES (?, ?)', task, false)
 
-	return new Response(
-		JSON.stringify(
-			{ message: 'success' },
+		return NextResponse.json(
 			{
-				headers: { 'content-type': 'application/json' },
-				status: 200,
-			}
+				message: 'success',
+			},
+			{ status: 200 }
 		)
-	)
+	} catch (err) {
+		return NextResponse.json(
+			{
+				error: { message: err },
+			},
+			{ status: 500 }
+		)
+	}
 }
 
 export async function PATCH(req: NextRequest) {
@@ -63,17 +74,25 @@ export async function PATCH(req: NextRequest) {
 
 	const { id, task, done } = await req.json()
 
-	if (task !== undefined && task !== null) {
-		await db.run(`UPDATE todo SET task = ? WHERE id = ?`, task, id)
-	}
-	if (done !== undefined && done !== null) {
-		await db.run(`UPDATE todo SET done = ? WHERE id = ?`, done, id)
-	}
-
-	return new Response(
-		JSON.stringify(
-			{ message: 'success' },
-			{ headers: { 'content-type': 'application/json' }, status: 200 }
+	try {
+		if (task !== undefined && task !== null) {
+			await db.run(`UPDATE todo SET task = ? WHERE id = ?`, task, id)
+		}
+		if (done !== undefined && done !== null) {
+			await db.run(`UPDATE todo SET done = ? WHERE id = ?`, done, id)
+		}
+		return NextResponse.json(
+			{
+				message: 'success',
+			},
+			{ status: 200 }
 		)
-	)
+	} catch (err) {
+		return NextResponse.json(
+			{
+				error: { message: err },
+			},
+			{ status: 500 }
+		)
+	}
 }

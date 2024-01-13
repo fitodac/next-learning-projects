@@ -1,5 +1,5 @@
 'use client'
-import { useState, useRef } from 'react'
+import { useState, useRef, FormEvent } from 'react'
 import gsap from 'gsap'
 import { addTask } from '@/actions'
 
@@ -40,11 +40,11 @@ export const Form = () => {
 		}, 600)
 	}
 
-	const handleChange = (e) => {
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setTask(e.target.value)
 	}
 
-	const handleSubmit = async (e) => {
+	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
 		const res = await addTask(task)
 		if (res?.message) hideForm()

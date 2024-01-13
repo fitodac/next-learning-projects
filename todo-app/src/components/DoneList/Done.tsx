@@ -2,7 +2,7 @@ import { ListItem } from './ListItem'
 import { getDoneTasks } from '@/actions'
 
 export const DoneList = async () => {
-	const data = await getDoneTasks()
+	const data: [] = await getDoneTasks()
 
 	if (!data.length) return <></>
 

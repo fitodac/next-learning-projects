@@ -1,20 +1,26 @@
 import gsap from 'gsap'
 
-export const showItemBody = (itemBody) => {
+export const showItemBody = (itemBody: React.RefObject<HTMLDivElement>) => {
 	gsap.to(itemBody.current, {
 		translateX: 0,
 		duration: 0.4,
 	})
 }
 
-export const hideItemBody = (itemBody) => {
+export const hideItemBody = (itemBody: React.RefObject<HTMLDivElement>) => {
 	gsap.to(itemBody.current, {
 		translateX: '-100%',
 		duration: 0.4,
 	})
 }
 
-export const showEditActions = ({ editActions, itemBody }) => {
+export const showEditActions = ({
+	editActions,
+	itemBody,
+}: {
+	editActions: React.RefObject<HTMLDivElement>
+	itemBody: React.RefObject<HTMLDivElement>
+}) => {
 	gsap.set(editActions.current, { translateX: 200 })
 
 	hideItemBody(itemBody)
@@ -27,7 +33,13 @@ export const showEditActions = ({ editActions, itemBody }) => {
 	})
 }
 
-export const hideEditActions = ({ editActions, itemBody }) => {
+export const hideEditActions = ({
+	editActions,
+	itemBody,
+}: {
+	editActions: React.RefObject<HTMLDivElement>
+	itemBody: React.RefObject<HTMLDivElement>
+}) => {
 	gsap.to(editActions.current, {
 		translateX: 200,
 		opacity: 0,
