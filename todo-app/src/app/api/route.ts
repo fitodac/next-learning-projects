@@ -25,10 +25,9 @@ export async function GET(req: NextRequest) {
 
 	try {
 		const response = await db.all(sql)
-		db.close()
-
 		return NextResponse.json(response, { status: 200 })
 	} catch (err) {
+		console.log('GET ERROR: ', err)
 		return NextResponse.json(
 			{
 				error: { message: err },
@@ -49,7 +48,6 @@ export async function POST(req: NextRequest) {
 	try {
 		const { task } = await req.json()
 		await db.run('INSERT INTO todo (task, done) VALUES (?, ?)', task, false)
-		db.close()
 
 		return NextResponse.json(
 			{
@@ -84,7 +82,6 @@ export async function PATCH(req: NextRequest) {
 		if (done !== undefined && done !== null) {
 			await db.run(`UPDATE todo SET done = ? WHERE id = ?`, done, id)
 		}
-		db.close()
 
 		return NextResponse.json(
 			{
@@ -114,7 +111,6 @@ export async function DELETE(req: NextRequest) {
 
 	try {
 		await db.run('DELETE FROM todo WHERE id = ?', id)
-		db.close()
 
 		return NextResponse.json(
 			{

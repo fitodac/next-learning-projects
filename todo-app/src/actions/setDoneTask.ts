@@ -3,7 +3,7 @@ import { revalidateTag } from 'next/cache'
 
 export const setDoneTask = async (id: number) => {
 	try {
-		const res = await fetch(`${process.env.BASEPATH}/api/`, {
+		const res = await fetch(`${process.env.BASEPATH}/api`, {
 			method: 'PATCH',
 			body: JSON.stringify({ id, done: 1 }),
 		})
