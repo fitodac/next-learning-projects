@@ -3,7 +3,12 @@ import { Database, open } from 'sqlite'
 import { NextRequest, NextResponse } from 'next/server'
 
 let db: Database<sqlite3.Database, sqlite3.Statement> | null = null
-const filename: string = './src/database/todo.sqlite'
+const filename: string =
+	'develop' === process.env.ENVIRONMENT
+		? './todo-app/src/database/todo.sqlite'
+		: './src/database/todo.sqlite'
+
+console.log(process.env.ENVIRONMENT)
 
 export async function GET(req: NextRequest) {
 	if (!db) {
