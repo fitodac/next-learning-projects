@@ -8,6 +8,7 @@ export const setDoneTask = async (id: number) => {
 			body: JSON.stringify({ id, done: 1 }),
 		})
 		revalidateTag('todo_collection')
+		// revalidateTag('todo_collection_done')
 		return await res.json()
 	} catch (err) {
 		console.log('error:', err)
@@ -21,6 +22,7 @@ export const setUndoneTask = async (id: number) => {
 			body: JSON.stringify({ id, done: 0 }),
 		})
 		revalidateTag('todo_collection')
+		// revalidateTag('todo_collection_done')
 		return await res.json()
 	} catch (err) {
 		console.log('error:', err)

@@ -8,6 +8,7 @@ export const addTask = async (task: string) => {
 			method: 'POST',
 		})
 		revalidateTag('todo_collection')
+		revalidateTag('todo_collection_done')
 		return await res.json()
 	} catch (err) {
 		console.log('error:', err)

@@ -4,7 +4,9 @@ import { getDoneTasks } from '@/actions'
 export const DoneList = async () => {
 	const data: [] = await getDoneTasks()
 
-	if (!data.length) return <></>
+	console.log(await typeof data)
+
+	if (data && !data.length) return <></>
 
 	return (
 		<div className="pt-5">

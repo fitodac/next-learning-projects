@@ -3,7 +3,7 @@ import { Database, open } from 'sqlite'
 import { NextRequest, NextResponse } from 'next/server'
 
 let db: Database<sqlite3.Database, sqlite3.Statement> | null = null
-const filename: string = './src/database/todo.sqlite'
+const filename: string = './public/database/todo.sqlite'
 
 export async function GET(req: NextRequest) {
 	if (!db) {
@@ -88,6 +88,37 @@ export async function PATCH(req: NextRequest) {
 			{ status: 200 }
 		)
 	} catch (err) {
+		return NextResponse.json(
+			{
+				error: { message: err },
+			},
+			{ status: 500 }
+		)
+	}
+}
+
+export async function DELETE(req: NextRequest) {
+	if (!db) {
+		db = await open({
+			filename,
+			driver: sqlite3.Database,
+		})
+	}
+
+	const { id } = await req.json()
+
+	try {
+		await db.run('DELETE FROM todo WHERE id = ?', id)
+
+		return NextResponse.json(
+			{
+				message: 'Success',
+			},
+			{ status: 200 }
+		)
+	} catch (err) {
+		console.log(`Error: ${err}`)
+
 		return NextResponse.json(
 			{
 				error: { message: err },
