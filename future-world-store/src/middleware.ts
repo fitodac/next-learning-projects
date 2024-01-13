@@ -17,4 +17,3 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/store', request.url))
   }
 }
- 
